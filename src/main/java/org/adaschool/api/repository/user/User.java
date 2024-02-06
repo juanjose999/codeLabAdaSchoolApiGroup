@@ -21,6 +21,11 @@ public class User {
         this.passwordHash = new BCryptPasswordEncoder().encode(password);
         this.createdAt = new Date();
     }
+    public User() {
+        this.id = null;
+        this.createdAt = new Date();
+    }
+
 
     public User(UserDto userDto) {
         this.id = null;
@@ -67,13 +72,7 @@ public class User {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
-
-    public void update(UserDto userDto) {
-        this.name = userDto.getName();
-        this.lastName = userDto.getLastName();
-        this.email = userDto.getEmail();
-        if (!userDto.getPassword().isEmpty()) {
-            this.passwordHash = new BCryptPasswordEncoder().encode(userDto.getPassword());
-        }
+    public String getPassword() {
+        return passwordHash;
     }
 }

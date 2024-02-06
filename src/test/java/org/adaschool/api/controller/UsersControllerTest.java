@@ -143,6 +143,4 @@ public class UsersControllerTest {
 
         verify(usersService, times(0)).deleteById(id);
     }
-
-
 }
