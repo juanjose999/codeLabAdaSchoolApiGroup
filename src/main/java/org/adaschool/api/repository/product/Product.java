@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Product {
 
-    private String id;
+    private final String id;
 
     private String name;
 
@@ -18,8 +18,7 @@ public class Product {
 
     private String imageUrl;
 
-
-    /*public Product() {
+    public Product() {
         this.id = "";
         this.name = "";
         this.description = "";
@@ -27,21 +26,7 @@ public class Product {
         this.tags = null;
         this.price = 0.0;
         this.imageUrl = "";
-    }*/public Product() {
-        this.id = null;
-        this.name = "";
-        this.description = "";
-        this.category = "";
-        this.tags = null;
-        this.price = 0.0;
     }
-
-    public void setId(String id) {
-        // This method is required to manually set the ID.
-        // If you're using Lombok, it should be generated automatically.
-        this.id = id;
-    }
-
 
     public Product(String id, String name, String description, String category, double price) {
         this.id = id;
@@ -113,10 +98,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public void updateFromDto(ProductDto productDto) {
-        if (productDto.getName() != null) {
-            this.name = productDto.getName();
-        }
+    public void update(ProductDto productDto) {
         this.name = productDto.getName();
         this.description = productDto.getDescription();
         this.category = productDto.getCategory();
