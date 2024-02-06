@@ -124,7 +124,7 @@ public class ProductsControllerTest {
         mockMvc.perform(delete(BASE_URL + "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(productsService, times(1)).deleteById("1");
     }
