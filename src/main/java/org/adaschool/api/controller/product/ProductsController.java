@@ -1,5 +1,8 @@
 package org.adaschool.api.controller.product;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.adaschool.api.exception.ProductNotFoundException;
 import org.adaschool.api.repository.product.Product;
 import org.adaschool.api.repository.product.ProductDto;
@@ -22,6 +25,8 @@ public class ProductsController {
         this.productsService = productsService;
     }
 
+    @Operation(summary = "Create a new product")
+    @ApiResponse(responseCode = "201", description = "Product created successfully")
     @PostMapping
     public ResponseEntity<Product> save(@RequestBody Product product) {
         Product savedProduct = productsService.save(product);
@@ -29,12 +34,19 @@ public class ProductsController {
         return ResponseEntity.created(productUri).body(savedProduct);
     }
 
+    @Operation(summary = "Get all products")
+    @ApiResponse(responseCode = "200", description = "List of products")
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productsService.all();
         return ResponseEntity.ok(products);
     }
 
+    @Operation(summary = "Get a product by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product found"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     @GetMapping("{id}")
     public ResponseEntity<Product> findById(@PathVariable("id") String id) {
         return productsService.findById(id)
@@ -43,6 +55,11 @@ public class ProductsController {
                         new ProductNotFoundException(id));
     }
 
+    @Operation(summary = "Update a product by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     @PutMapping("{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") String id, @RequestBody ProductDto productDto) {
         Optional<Product> optionalUser = productsService.findById(id);
@@ -63,6 +80,11 @@ public class ProductsController {
         }
     }
 
+    @Operation(summary = "Delete a product by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") String id) {
         Optional<Product> existingProduct = productsService.findById(id);
