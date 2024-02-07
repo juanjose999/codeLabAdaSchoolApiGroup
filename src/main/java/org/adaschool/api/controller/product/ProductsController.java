@@ -1,5 +1,7 @@
 package org.adaschool.api.controller.product;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.adaschool.api.exception.ProductNotFoundException;
 import org.adaschool.api.repository.product.Product;
 import org.adaschool.api.repository.product.ProductDto;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/products/")
+@Api(value = "Products API", tags = "Products")
 public class ProductsController {
 
     private final ProductsService productsService;
