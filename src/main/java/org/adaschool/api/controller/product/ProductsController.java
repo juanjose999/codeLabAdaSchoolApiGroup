@@ -2,6 +2,7 @@ package org.adaschool.api.controller.product;
 
 import org.adaschool.api.exception.ProductNotFoundException;
 import org.adaschool.api.repository.product.Product;
+import org.adaschool.api.repository.product.ProductDto;
 import org.adaschool.api.service.product.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,13 +43,23 @@ public class ProductsController {
                         new ProductNotFoundException(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
-        Product updatedProduct = productsService.update(product, id);
-        if (updatedProduct != null) {
-            return ResponseEntity.ok(updatedProduct);
-        } else {
-            throw new ProductNotFoundException(id);
+    @PutMapping("{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") String id, @RequestBody ProductDto productDto) {
+        Optional<Product> optionalUser = productsService.findById(id);
+
+        if (optionalUser.isPresent()) {
+            Product existinProduct = optionalUser.get();
+            existinProduct.setName(productDto.getName());
+            existinProduct.setDescription(productDto.getDescription());
+            existinProduct.setCategory(productDto.getCategory());
+            existinProduct.setPrice(productDto.getPrice());
+
+            productsService.save(existinProduct);
+
+            return ResponseEntity.ok().build();
+        }
+        else {
+            throw  new ProductNotFoundException(id);
         }
     }
 
